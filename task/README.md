@@ -63,4 +63,58 @@
     - Class Path에 정의되거나, JVM Option에서 -cp, -classpath에 저장된 클래스들을 로딩
   - 사용자 정의 클래스 로더
 
-
+## 스프링 MVC
+  - 기본내용
+    - DispatherServlet은 내부적으로 스프링 컨테이너를 생성하는데, contextConfigLocation 초기화 파라미터를 이용해 컨테이너를 생성할 설정 파일을 지정한다. 
+    - 스프링 컨트롤러
+      - MVC 컨트롤러는 클라이언트의 요청을 처리하는 기능을 제공한다. 
+      - /hello 주소로 요청을 하면 /hello가 매핑된 메서드를 이용해 요청을 처리한다.
+      - 컨트롤러서 응답 결과를 생성할 수 있지만, 보통 결과를 보여줄때 사용할 뷰 이름을 리턴한다. 
+      - 컨트롤러는 뷰에서 사용할 데이터를 모델에 담아서 전달하고, 뷰에서는 모델에 담긴 데이터를 이용해 알맞은 응답결과를 생성한다.
+    - 뷰 구현
+      - 뷰는 응답 결과를 생성해 준다. 
+      - ${} 형식으로 컨트롤러에서 모델에 보낸 값이 온다. 
+    - 뷰리졸버
+      - 뷰 이름을 실제 어떤 뷰와 연결할지 설정한다. 
+      - prefix + 뷰 이름 + suffix 형식으로 뷰를 선택한다.  
+  - 기본 흐름과 주요 컴포넌트
+    - DispacherServlet : 클라이언트 요청을 전부 전달 받음. 컨트롤러에게 클라이언트 요청을 전달하고 컨트롤러가 리턴한 결과값을 View에 전달. 또는 알맞은 응답 생성하도록 함.
+    - HandlerMapping : 클라이언트의 요청 URL을 어떤 컨트롤러가 처리할지 결정.
+    - HandlerAdapter : 디스패처서블릿의 처리 요청을 변환해 컨트롤러에게 전달하고, 컨트롤러의 응답 결과를 디스패처서블릿이 원하는 형식으로 변환한다. 
+    - 컨트롤러 : 클라이언트 요청 처리 후, 결과를 리턴한다. 응답 결과에서 보여줄 데이터를 모델에 담아 전달
+    - ModelAndView : 컨트롤러가 처리한 결과 정보 및 뷰 선택에 필요한 정보를 담는다.
+    - ViewResolver 컨트롤러의 처리 결과를 보여줄 뷰를 결정한다. jsp, http, text, 엑셀 등등..
+    - View : 컨트롤러의 처리 결과 화면을 생성한다. 
+  - 스프링 MVC 설정
+    - 스프링 MVC를 설정하려면 최소 다음 구성 요소를 빈 객체로 등록해야 한다.
+      - HandlerMapping 구현객체
+      - HanderAdapter 구현 객체
+      - ViewResolver 구현 객체
+  - 서블릿 매핑
+    - 컨트롤러 매핑 경로로 전체 경로를 사용하고 싶을때 다음 2가지를 사용하자
+      - 서블릿 매핑 설정에서 URL 패턴을 "/"로 지정.
+      - 스프링 MVC 설정에서 디폴트 서블릿 핸들러를 작성
+    - 서블릿 매핑 설정에서 URL 패턴을 <url-pattern>/</url-pattern>으로 하면 jsp 요청을 제외한 나머지 요청을 DispatcherServlet이 받는다. 
+    - DispatcherServlet에 매핑 되지 않는 경로로 요청이 오면 404 응답 코드를 웹 브라우저에 전송한다. 
+    - 404 메시지 대신 컨테이너의 디폴트 서블릿을 이용해 처리하도록 하려면 <mvc:default-servlet-hander> 설정을 해야한다.
+    - 디폴트 서블릿은 각 WAS 마다 제공하고 있다. 
+  - 컨트롤러
+    - @RequestMapping 메서드가 String을 리턴할 경우, 처리 결과를 보여줄 뷰 이름을 리턴한다. 
+    - 뷰 이름을 리턴하기 전에 다음 두 작업을 수행 한다. 
+      - 클라이언트 요청 처리 ex) 회원 목록 조회 요청 오면 DAO등을 이용해 List에 담아줌.
+      - 처리 결과 데이터를 뷰에 전달. ex) 회원목록 List를 모델에 담아 전달.
+    - ModelAndView
+      - 모델 설정과 뷰 이름을 합쳐 놓은 것이다. 
+      - @Controller 나오기 전에 나왔던 기술. @Controller가 나오고선 잘 사용 안한다. 
+    - @RequestMapping
+      - 같은 경로를 공유하는 경우 클래스위에 @RequestMapping을 적용시킨다. 
+      - method 속성을 이용해 get/post method를 설정할 수 있다. 
+      - method에는 GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS, TRACE 가 있따. 
+    - @PathVariable
+      - localhost:8080/article?id=10 대신에 localhost:8080/article/10 같이 파라미터를 사용하지 않고 표현할 수 있다.
+      - RESTful API URL 구성방식인데, @PathVariable을 이용하면 위와 같은 URL을 처리할 수 있다. 
+        > @RequestMapping("/article/{id})
+          public String articleDetail(@PathVariable String id) ...
+      - @PathVariable로 경로변수의 값을 파라미터로 전달 받는다. 
+  - HTTP 요청 파라미터와 폼 처리
+    - ㅇㅇ
