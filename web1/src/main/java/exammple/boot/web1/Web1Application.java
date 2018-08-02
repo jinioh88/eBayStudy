@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Web1Application {
-	@Bean
 	public HelloController helloController() {
 		return new HelloController();
 	}
