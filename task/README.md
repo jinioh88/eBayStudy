@@ -117,4 +117,32 @@
           public String articleDetail(@PathVariable String id) ...
       - @PathVariable로 경로변수의 값을 파라미터로 전달 받는다. 
   - HTTP 요청 파라미터와 폼 처리
-    - ㅇㅇ
+    
+
+## REST API
+  - REST 구성
+    - 자원 - URI
+    - 행위 - HTTP Method
+    - 표현
+  - REST 특징
+    - Uniform
+      - URI로 지정한 리소스에 대한 조작을 통일되고 한적적인 인터페이스로 수행하는 아키텍처 스타일
+    - Stateless
+      - REST는 무상태성을 갖는다. 단순 서버에 들어오는 API 요청만 하면 된다.
+      - 이로 인한 서비스의 자유도가 높아지고 서버에 불필요한 정보를 관리 안해도 되어 구현에 쉬워진다.
+    - Cacheable
+      - HTTP 기존 웹표준을 사용하기 떄문에, 캐싱 기능이 적용 가능 하다. 
+    - Self-descriptivness
+      - REST-API만 보고도 이를 쉽게 이해할 수 있는 구조로 되어있다.
+    - Client-Server 구조
+      - 서버와 클라이언트간 역할이 분명해 개발해야할 내용이 명확해 지고, 서로간 의존성이 줄어들게 된다.
+    - 계층형 구조
+  - REST API 디자인 구조
+    - REST API 중심규칙
+      - URI는 정보의 자원을 표현해야 한다.
+      > GET /boards/delete/1   // delte와 같은 행동이 들어가면 안된다.
+      - 자원의 행위는 HTTP Method로 표현하자. 위식을 다음과 같이 쓸 수 있다.
+      > DELTE /boards/1  // 1번 게시물 삭제
+      > GET /boards/1
+      > POST /boards/2 // 2번 게시물 등록
+      
