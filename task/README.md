@@ -145,4 +145,22 @@
       > DELTE /boards/1  // 1번 게시물 삭제
       > GET /boards/1
       > POST /boards/2 // 2번 게시물 등록
+
+## ThreadLocal
+  - 쓰레드로컬?
+    - 일반 변수는 코드 블록 밖에서 참조를 할수가 없다.
+    - 그런데 쓰레드 로컬은 같은 선언한 쓰레드에서 코드 블록이건 어디건 서로 참조를 할 수가 있는 객체다.
+  - 어떻게 사용하나?
+    - 1) 객체생성 
+      > ThreadLocal<UserInfo> userInfo = new ThreadLocal<>();
+    - 2) ThreadLocal.set()으로 현재 쓰레드의 로컬 값 세팅
+      > userInfo.set(new UserInfo());
+    - 3) ThreadLocal.get()으로 쓰레드 로컬 값 읽어오기
+      > UserInfo info = userInfo.get();
+  - 어디에 활용되나?
+    - 사용자 인증정보 전파 : Spring Security에서 사용자 인증 정보를 전파하는데 사용한다.
+    - 쓰레디에 안전해야 되는 데이터 보관
+  - 주의할 점
+    - ThreadLocal 사용이 끝나면 반드시 삭제 해 주자.
+
       
