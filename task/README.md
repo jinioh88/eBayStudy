@@ -163,4 +163,61 @@
   - 주의할 점
     - ThreadLocal 사용이 끝나면 반드시 삭제 해 주자. remove();
 
-      
+## Thymeleaf 사용법
+### 표현식
+  - Variable Expression : ${..}
+    - context에 포함된 변수들을 사용할 수 있다. 
+    - <p>Hi <span th:text="${user.userName}"></span>
+  - Selection Variable Expression : *{...}
+    - 가까운 DOM에 th:Object로 정의된 변수가 있다면 그 변수에 포함된 값을 나타낸다.
+  >
+    <div th:Object="${session.user}">
+      <p>Name: <span th:text="*{firstName"}></span></p>
+    <div>
+  - Message Expression : #{...}
+    - 미리 정의된 message properties 파일이 존재하고 thymeleaf engine에 등록됬으면 #를 사용할 수 있다.
+    - home.welcome=안녕. 방가워
+    - <p th:text="#{home.welcome}">인사</p>
+  - Link URL Expression : @{...}
+    - <a href="list.html" th:href="@{/member/list(memId=${m.id})}">View</a>
+  - 반복문
+    - th:each 또는 data-th-each 속성으로 사용 가능하다. 
+    - java.util.Iterable 인터페이스를 구현한 객체 사용 가능하다. 
+    - java.util.Map 인터페이스 구현한 객체도 가능하다. 
+    >
+      <table>
+        <tr th:each="mem : ${members}">
+          <td> th:text="${mem.id}"></td>
+        </tr> </table>
+    - 반복을 돌면서 index 마다 상태값 가져올 수 있다. 변수 옆에 ','찍고 status 변수를 정의하면 된다.
+    >
+      <table>
+        <tr th:each="mem, iter : ${members} th:class="${iter.odd}? 'odd">
+          <td> th:text="${mem.id}"></td>
+        </tr> </table>
+    - iter에는 다음 상태 값들을 가진다.
+      - index : 0부터 시작하는 인덱스
+      - count : 1 부터 시작하는 인덱스
+      - size : list의 size
+      - current - 현재 인덱스의 변수
+      - even/odd : 홀짝 여부
+      - first/last : 처음/마지막 여부
+  - 조건문
+    - 특정 조건일때 th:if 반대의 경우 th:unless 상용한다. 
+  >
+    <table>
+      <tr th:if"${#lists.size(users)}>0" th:each, iter : ${users}">...
+  - fragment
+    - <div th:fragment="bottom">...</div>   (footer.html)인 경우
+    - <div thLinclude="footer :: bottom"></div> 
+    - 위와 같이 사용하려면 뷰지졸버에 prefix를 /WEB-INF/templates/ suffix를 .html로 설정되 있어야 한다. 
+    - fragment 대신 id를 참조해 include 할 수 있다. 
+      - <div id="bottom"> ...</div>
+      - <div th:include="footer::#bottom>></div>
+    - fragment로 parameter 전달 하기 
+    > 
+      <div th:fragment="frag(onevar, twovar)">
+        <p th:text="${onever}+'-'+${twovar}">..</p>
+      <div>
+    >
+      <div th:include="::frag(${value1},${value2})>...</div>  
