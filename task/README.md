@@ -219,9 +219,8 @@
       <div th:fragment="frag(onevar, twovar)">
         <p th:text="${onever}+'-'+${twovar}">..</p>
       <div>
-  >
-      <div th:include="::frag(${value1},${value2})>...</div>  
-
+  >   <div th:include="::frag(${value1},${value2})>...</div>  
+  - 
 ## 웹 어플리케이션 4가지 영역(scope)
   - Page 영역
     - 하나의 JSP 페이지를 처리할 때 사용되는 영역.
