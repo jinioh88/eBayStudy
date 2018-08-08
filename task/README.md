@@ -167,7 +167,7 @@
 ### 표현식
   - Variable Expression : ${..}
     - context에 포함된 변수들을 사용할 수 있다. 
-    - <p>Hi <span th:text="${user.userName}"></span>
+  >   <p>Hi <span th:text="${user.userName}"></span>
   - Selection Variable Expression : *{...}
     - 가까운 DOM에 th:Object로 정의된 변수가 있다면 그 변수에 포함된 값을 나타낸다.
   >
@@ -184,13 +184,13 @@
     - th:each 또는 data-th-each 속성으로 사용 가능하다. 
     - java.util.Iterable 인터페이스를 구현한 객체 사용 가능하다. 
     - java.util.Map 인터페이스 구현한 객체도 가능하다. 
-    >
+  >
       <table>
         <tr th:each="mem : ${members}">
           <td> th:text="${mem.id}"></td>
         </tr> </table>
     - 반복을 돌면서 index 마다 상태값 가져올 수 있다. 변수 옆에 ','찍고 status 변수를 정의하면 된다.
-    >
+  >
       <table>
         <tr th:each="mem, iter : ${members} th:class="${iter.odd}? 'odd">
           <td> th:text="${mem.id}"></td>
@@ -215,9 +215,9 @@
       - <div id="bottom"> ...</div>
       - <div th:include="footer::#bottom>></div>
     - fragment로 parameter 전달 하기 
-    > 
+  > 
       <div th:fragment="frag(onevar, twovar)">
         <p th:text="${onever}+'-'+${twovar}">..</p>
       <div>
-    >
+  >
       <div th:include="::frag(${value1},${value2})>...</div>  
